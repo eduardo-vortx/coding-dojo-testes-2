@@ -1,6 +1,8 @@
 const PessoaRepository = require('./../src/pessoa-repository')
 const knex = require('knex')
 const config = require('../knexfile')
+const faker = require('faker')
+const { assert, expect } = require('chai')
 
 describe('Pessoa Repository', () => {
   const db = knex(config[process.env.NODE_ENV])
@@ -12,9 +14,14 @@ describe('Pessoa Repository', () => {
 
   it('deve incluir a pessoa', () => {
     const pessoa = {
-      email: 
+      email: faker.internet.email(),
+      genero: faker.helpers.randomize(['M', 'F']),
+      nomeCompleto: faker.name.firstName(),
+      celular: faker.phone.phoneNumber()
     }
 
-    await repository.insert(pessoa)
+    const a = await repository.insert(pessoa)
+
+    expect(true).to.be.true
   })
 })
