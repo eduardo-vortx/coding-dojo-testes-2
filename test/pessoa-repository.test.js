@@ -29,7 +29,7 @@ describe('Pessoa Repository', () => {
     expect(pessoaIncluida).to.be.eqls({ ...pessoa, id })
   })
 
-  it('deve buscar uma pessoa inserida pelo id', async () => {
+  it('deve buscar por id uma pessoa inserida', async () => {
     const pessoa = gerarPessoaAleatoria()
 
     const id = await db('pessoas')
@@ -39,5 +39,22 @@ describe('Pessoa Repository', () => {
     const pessoaInserida = await repository.getById(id)
 
     expect(pessoaInserida).to.be.eqls({ id, ...pessoa })
+  })
+
+  it('deve deletar por id uma pessoa inserida', async () => {
+
+    const pessoa = gerarPessoaAleatoria()
+    
+    const id = await db('pessoas')
+    .insert(pessoa)
+    .then(([id]) => id)
+
+    await repository.deleteById(id)
+
+    const [pessoaDeletada] = await db('pessoas')
+    .select()
+    .where('id', id)
+
+    expect(pessoaDeletada).to.be.eqls({ id, ...pessoa })
   })
 })

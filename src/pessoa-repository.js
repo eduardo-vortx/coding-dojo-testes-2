@@ -12,6 +12,10 @@ class PessoaRepository {
   async getById(id) {
     return await this.db('pessoas').where('id', id).first()
   }
+
+  async deleteById(id) {
+    return await this.db('pessoas').where('id', id).delete()
+  }
 }
 
 module.exports = PessoaRepository
