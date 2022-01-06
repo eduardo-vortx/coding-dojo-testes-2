@@ -4,8 +4,9 @@ class PessoaRepository {
   }
 
   async insert(pessoa) {
-    const result = await this.db('pessoas').insert(pessoa)
-    console.log(result)
+    return await this.db('pessoas')
+      .insert(pessoa)
+      .then(([id]) => id)
   }
 }
 
