@@ -10,3 +10,5 @@ class PessoaRepository {
     console.log(result)
   }
 }
+
+module.exports = PessoaRepository
