@@ -42,19 +42,32 @@ describe('Pessoa Repository', () => {
   })
 
   it('deve deletar por id uma pessoa inserida', async () => {
-
     const pessoa = gerarPessoaAleatoria()
-    
+
     const id = await db('pessoas')
-    .insert(pessoa)
-    .then(([id]) => id)
+      .insert(pessoa)
+      .then(([id]) => id)
 
     await repository.deleteById(id)
 
-    const [pessoaDeletada] = await db('pessoas')
-    .select()
-    .where('id', id)
+    const [pessoaDeletada] = await db('pessoas').select().where('id', id)
 
-    expect(pessoaDeletada).to.be.eqls({ id, ...pessoa })
+    expect(pessoaDeletada).to.be.undefined
+  })
+
+  it('deve atualizar por id uma pessoa', async () => {
+    const pessoa = gerarPessoaAleatoria()
+
+    const id = await db('pessoas')
+      .insert(pessoa)
+      .then(([id]) => id)
+
+    const atualizacao = gerarPessoaAleatoria()
+
+    await repository.update(id, atualizacao)
+
+    const [pessoaAtualizada] = await db('pessoas').select().where('id', id)
+
+    expect(pessoaAtualizada).to.be.eqls({ id, ...atualizacao })
   })
 })
