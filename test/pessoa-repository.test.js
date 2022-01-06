@@ -12,6 +12,10 @@ describe('Pessoa Repository', () => {
     await db.migrate.latest()
   })
 
+  let gerarPessoaAleatoria = () => ({
+    
+  })
+
   it('deve incluir a pessoa', async () => {
     const pessoa = {
       email: faker.internet.email(),
@@ -25,5 +29,18 @@ describe('Pessoa Repository', () => {
     const [pessoaIncluida] = await db('pessoas').select().where('id', id)
 
     expect(pessoaIncluida).to.be.eqls({ ...pessoa, id })
+  }),
+
+  it('deve buscar uma pessoa inserida pelo id', async () => {
+    const pessoa = {
+      email: faker.internet.email(),
+      genero: faker.helpers.randomize(['M', 'F']),
+      nomeCompleto: faker.name.firstName(),
+      celular: faker.phone.phoneNumber(),
+    }
+
+
+
   })
+
 })
