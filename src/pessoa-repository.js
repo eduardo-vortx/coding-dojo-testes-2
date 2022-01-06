@@ -10,9 +10,7 @@ class PessoaRepository {
   }
 
   async getById(id) {
-    return await this.db('pessoas')
-    .first()
-    .where('id', id)
+    return await this.db('pessoas').where('id', id).first()
   }
 }
 

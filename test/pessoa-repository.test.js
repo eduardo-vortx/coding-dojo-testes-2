@@ -12,35 +12,32 @@ describe('Pessoa Repository', () => {
     await db.migrate.latest()
   })
 
-  let gerarPessoaAleatoria = () => ({
-    
+  const gerarPessoaAleatoria = () => ({
+    email: faker.internet.email(),
+    genero: faker.helpers.randomize(['M', 'F']),
+    nomeCompleto: faker.name.firstName(),
+    celular: faker.phone.phoneNumber(),
   })
 
   it('deve incluir a pessoa', async () => {
-    const pessoa = {
-      email: faker.internet.email(),
-      genero: faker.helpers.randomize(['M', 'F']),
-      nomeCompleto: faker.name.firstName(),
-      celular: faker.phone.phoneNumber(),
-    }
+    const pessoa = gerarPessoaAleatoria()
 
     const id = await repository.insert(pessoa)
 
     const [pessoaIncluida] = await db('pessoas').select().where('id', id)
 
     expect(pessoaIncluida).to.be.eqls({ ...pessoa, id })
-  }),
-
-  it('deve buscar uma pessoa inserida pelo id', async () => {
-    const pessoa = {
-      email: faker.internet.email(),
-      genero: faker.helpers.randomize(['M', 'F']),
-      nomeCompleto: faker.name.firstName(),
-      celular: faker.phone.phoneNumber(),
-    }
-
-
-
   })
 
+  it('deve buscar uma pessoa inserida pelo id', async () => {
+    const pessoa = gerarPessoaAleatoria()
+
+    const id = await db('pessoas')
+      .insert(pessoa)
+      .then(([id]) => id)
+
+    const pessoaInserida = await repository.getById(id)
+
+    expect(pessoaInserida).to.be.eqls({ id, ...pessoa })
+  })
 })
